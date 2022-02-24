@@ -3,7 +3,6 @@ import { Button, Form, Row } from 'react-bootstrap';
 
 function Cadastro() {
     const [distritos, setDistritos] = useState([]);
-
     const [selectedCidade, setCidade] = useState('');
     const [selectedNome, setNome] = useState('');
     const [selectedCargo, setCargo] = useState('');
