@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Modal, Row, Table, Col, Container, Form } from 'react-bootstrap';
 
 function Funcionarios() {
+    const [Data, setData] = useState(JSON.parse(localStorage.getItem('edit')));
     const [distritos, setDistritos] = useState([]);
     const [selectedCidade, setCidade] = useState('');
     const [selectedNome, setNome] = useState('');
@@ -14,6 +15,7 @@ function Funcionarios() {
         A.map((Y) => {
             if (Y.id === val) {
                 localStorage.setItem('edit', '[' + JSON.stringify(Y) + ']')
+                setNome(Y.nome)
             }
         })
     }
@@ -23,12 +25,16 @@ function Funcionarios() {
             .then(result => setDistritos(result))
     }, [])
 
-    const SaveChanges=(obj)=>{
+    const SaveChanges=(a, b, c)=>{
+        console.log(a)
         var List=(JSON.parse(localStorage.getItem('Funcionarios')))
+        var Id=(JSON.parse(localStorage.getItem('edit')))
+        console.log(Id)
         List.map((z)=>{
            var Contador=0
-            if (z.id===obj.id){
-                List[Contador]=z
+            if (z.id===Id.id){
+                List[Contador]={nome:a, cidade:b, cargo:c, id:Id.id}
+                console.log(List)
                 localStorage.setItem('Funcionarios', JSON.stringify(List))
             }
         })
@@ -79,7 +85,7 @@ function Funcionarios() {
                                             <Form>
                                                 <Form.Group className="mb-3" controlId="formBasicEmail">
                                                     <Form.Label>Nome</Form.Label>
-                                                    <Form.Control onChange={(e) => setNome(e.target.value)} value={a.nome} type="text" placeholder="Digite o nome" />
+                                                    <Form.Control onChange={(e) => setNome(e.target.value)} value={selectedNome} type="text" placeholder="Digite o nome" />
                                                     <Form.Text className="text-muted">
                                                     </Form.Text>
                                                 </Form.Group>
@@ -108,7 +114,7 @@ function Funcionarios() {
                                 <Button variant="secondary" onClick={handleClose}>
                                     Fechar
                                 </Button>
-                                <Button variant="primary" onClick={SaveChanges(JSON.parse(localStorage.getItem('edit')))}>
+                                <Button variant="primary" onClick={()=>SaveChanges(selectedNome, selectedCidade, selectedCargo)}>
                                     Salvar alterações
                                 </Button>
                             </Modal.Footer>
